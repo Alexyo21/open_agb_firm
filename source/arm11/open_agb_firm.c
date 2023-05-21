@@ -47,14 +47,14 @@
 #include "kevent.h"
 
 
-#define OAF_WORK_DIR    "sdmc:/3ds/open_agb_firm"
+#define OAF_WORK_DIR    "sdmc:/3ds/gba-net-boot/open_agb_firm"
 #define OAF_SAVE_DIR    "saves"                   // Relative to work dir.
 #define INI_BUF_SIZE    (1024u)
 #define DEFAULT_CONFIG  "[general]\n"             \
                         "backlight=64\n"          \
                         "backlightSteps=5\n"      \
                         "directBoot=false\n"      \
-                        "useGbaDb=true\n\n"       \
+                        "useGbaDb=false\n\n"       \
                         "[video]\n"               \
                         "scaler=2\n"              \
                         "gbaGamma=2.2\n"          \
@@ -70,6 +70,7 @@
                         "[advanced]\n"            \
                         "saveOverride=false\n"    \
                         "defaultSave=14"
+#define DEFAULT_AUTOBOOT "sdmc:/rom.gba"
 
 typedef struct
 {
@@ -118,7 +119,7 @@ static OafConfig g_oafConfig =
 	64,    // backlight
 	5,     // backlightSteps
 	false, // directBoot
-	true,  // useGbaDb
+	false,  // useGbaDb
 
 	// [video]
 	2,     // scaler
@@ -775,6 +776,15 @@ Result oafInitAndRun(void)
 	{
 		do
 		{
+			// Create autoboot.txt for default rom if it doesn't exist
+			if((res = fsLoadPathFromFile("autoboot.txt", filePath)) == RES_FR_NO_FILE)
+			{
+				const char *const defaultAutoboot = DEFAULT_AUTOBOOT;
+				if((res = fsQuickWrite("autoboot.txt", defaultAutoboot, strlen(defaultAutoboot))) != RES_OK) break;
+			}
+			else if(res != RES_OK) break;
+			memset(filePath, 0, 512);
+
 			// Try to load the ROM path from autoboot.txt.
 			// If this file doesn't exist show the file browser.
 			if((res = fsLoadPathFromFile("autoboot.txt", filePath)) == RES_FR_NO_FILE)
