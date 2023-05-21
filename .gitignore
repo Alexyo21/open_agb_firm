@@ -13,3 +13,4 @@ tools/gba-db-builder/gba.xml
 open_agb_firm.firm
 open_agb_firm*.7z
 TODO.txt
+venv
