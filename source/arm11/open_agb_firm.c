@@ -1067,7 +1067,9 @@ static void adjustDisplaySettings() {
 
 void oafUpdate(void)
 {
-	LGY_handleOverrides();
+	u16 input = 0xffff;
+
+	LGY_handleOverrides(input);
 	adjustDisplaySettings();
 	waitForEvent(g_frameReadyEvent);
 }
