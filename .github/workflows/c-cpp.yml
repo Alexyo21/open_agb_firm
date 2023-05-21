@@ -16,12 +16,28 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install dependencies
+      with:
+        fetch-depth: 1
+        submodules: recursive
+
+    - name: Get ctr_firm_builder commit
+      run: echo "FIRM_BUILDER_COMMIT=$(git ls-remote https://github.com/derrekr/ctr_firm_builder.git HEAD | cut -f1)" >> $GITHUB_ENV
+
+    - name: Cache ctr_firm_builder
+      id: cache-firm-builder
+      uses: actions/cache@v3
+      with:
+        path: ctr_firm_builder
+        key: ${{ runner.os }}-${{ env.FIRM_BUILDER_COMMIT }}
+
+    - name: Install ctr_firm_builder dependencies
+      if: steps.cache-firm-builder.outputs.cache-hit != 'true'
       run: |
         apt-get update
         apt-get -y install gcc
 
     - name: Build ctr_firm_builder
+      if: steps.cache-firm-builder.outputs.cache-hit != 'true'
       run: |
         git clone --depth 1 --recurse-submodules https://github.com/derrekr/ctr_firm_builder.git
         cd ctr_firm_builder
@@ -30,12 +46,11 @@ jobs:
     - name: Build project
       run: |
         export PATH=$PWD/ctr_firm_builder:$PATH
-        git submodule update --init --depth 1 --recursive
         make nightly
         echo ${{ github.sha }} >> ./nightly/nightly_commit.txt
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3.1.0
+      uses: actions/upload-artifact@v3
       with:
         name: open_agb_firm_nightly
         path: ./nightly
