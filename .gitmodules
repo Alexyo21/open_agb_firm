@@ -1,6 +1,6 @@
 [submodule "libraries/libn3ds"]
 	path = libraries/libn3ds
-	url = https://github.com/Henny022/libn3ds.git
+	url = https://github.com/Alexyo21/libn3ds.git
 	branch = main
 [submodule "tools/lgyFbScaler/lodepng"]
 	path = tools/lgyFbScaler/lodepng
