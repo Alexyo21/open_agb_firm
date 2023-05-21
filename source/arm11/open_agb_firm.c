@@ -45,6 +45,7 @@
 #include "arm11/patch.h"
 #include "kernel.h"
 #include "kevent.h"
+#include "arm11/drivers/codec.h"
 
 
 #define OAF_WORK_DIR    "sdmc:/3ds/open_agb_firm"
@@ -529,6 +530,11 @@ static void gbaGfxHandler(void *args)
 {
 	const KHandle event = (KHandle)args;
 
+	u32 curExtra, lastExtra;
+	lastExtra = 0;
+	bool curLgySleep, lastLgySleep;
+	lastLgySleep = false;
+
 	while(1)
 	{
 		if(waitForEvent(event) != KRES_OK) break;
@@ -558,6 +564,41 @@ static void gbaGfxHandler(void *args)
 		                   GFX_getFramebuffer(SCREEN_TOP) + (16 * 240 * 3), 368u<<16 | 240u, 1u<<12 | 1u<<8);
 		GFX_waitForPPF();
 		GFX_swapFramebufs();
+				// Scan input for KEY_SHELL and KEY_Y/KEY_SELECT
+		hidScanInput();
+
+		curLgySleep = LGY_isSleeping();
+		curExtra = hidGetExtraKeys(0);
+
+		// Check if shell was closed, or if GBA slept itself
+		if(((curExtra & KEY_SHELL) && !(lastExtra & KEY_SHELL))
+		   || (curLgySleep && !lastLgySleep))
+		{
+			// Turn off sound and screen preemptively to fake-sleep GBA
+			CODEC_muteI2S();
+			GFX_powerOffBacklights(GFX_BLIGHT_BOTH);
+
+			// Have ARM9 commandeer the ARM7 and force it into sleep
+			LGY_sleepGba();
+		}
+		else if((!(curExtra & KEY_SHELL) && (lastExtra & KEY_SHELL) && !curLgySleep)
+		        || (!curLgySleep && lastLgySleep))
+		{
+			// Restore backlight before waking.
+			GFX_powerOnBacklights(GFX_BLIGHT_BOTH);
+
+			// Force the GBA to wake up
+			LGY_wakeGba();
+
+			// Restore audio last, on the off chance that a DMA
+			// channel caused audio to glitch.
+			// Since the GBA is in real sleep mode,
+			// this should be mostly glitch-free.
+			CODEC_unmuteI2S();
+		}
+
+		lastExtra = curExtra;
+		lastLgySleep = curLgySleep;
 
 		// Trigger only if both are held and at least one is detected as newly pressed down.
 		if(hidKeysHeld() == (KEY_Y | KEY_SELECT) && hidKeysDown() != 0)
