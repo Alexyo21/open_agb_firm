@@ -5,6 +5,10 @@ ifeq ($(strip $(DEVKITARM)),)
 $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
+ifneq (, $(shell which firmtool))
+USE_FIRMTOOL := 1
+endif
+
 export TARGET := open_agb_firm
 ENTRY9        := 0x08000040
 ENTRY11       := 0x1FF89034
