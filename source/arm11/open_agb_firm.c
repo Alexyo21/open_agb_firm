@@ -47,7 +47,7 @@
 #include "kevent.h"
 
 
-#define OAF_WORK_DIR    "sdmc:/3ds/gba-net-boot/open_agb_firm"
+#define OAF_WORK_DIR    "sdmc:/3ds/open_agb_firm"
 #define OAF_SAVE_DIR    "saves"                   // Relative to work dir.
 #define INI_BUF_SIZE    (1024u)
 #define DEFAULT_CONFIG  "[general]\n"             \
