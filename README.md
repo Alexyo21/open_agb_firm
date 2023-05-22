@@ -14,7 +14,7 @@ open_agb_firm is currently in alpha. While open_agb_firm is relatively stable an
 Additionally, we are not responsible for any damage that may occur to your system as a direct or indirect result of you using open_agb_firm.
 
 ## Setup
-* Download the [latest release](https://github.com/profi200/open_agb_firm/releases/latest) and extract it.
+* Download the [latest release](https://github.com/Alexyo21/open_agb_firm/releases/latest) and extract it.
 * Copy the `open_agb_firm.firm` file to your 3DS's SD card at `/luma/payloads` if you're using Luma3DS or elsewhere if you're using fastboot3DS.
 * Copy the `3ds` folder to the root of your 3DS's SD card. Merge folders if asked.
 * Launch open_agb_firm using Luma3DS by holding START while booting your 3DS or assign it to a slot if you're using fastboot3DS.
