@@ -1,4 +1,4 @@
-# open_agb_firm (not woeking for now)
+# open_agb_firm (not working for now)
 open_agb_firm is a bare metal interface for *natively* running GBA games and homebrew using the 3DS's built-in GBA hardware.
 
 open_agb_firm is also a complete and better alternative to GBA VC injects (AGB_FIRM), allowing for:
