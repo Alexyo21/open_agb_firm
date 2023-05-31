@@ -1,5 +1,6 @@
-# open_agb_firm (not working for now)
+# open_agb_firm
 open_agb_firm is a bare metal interface for *natively* running GBA games and homebrew using the 3DS's built-in GBA hardware.
+suggesting to put the volume to zero when closing the 3ds lid.
 
 open_agb_firm is also a complete and better alternative to GBA VC injects (AGB_FIRM), allowing for:
 * Launching GBA files directly from the SD card
