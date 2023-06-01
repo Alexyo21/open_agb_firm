@@ -204,6 +204,7 @@ Build open_agb_firm as a debug build via `make`, or as a release build via `make
 You may use this under the terms of the GNU General Public License GPL v3 or the terms of any later revisions of the GPL. Refer to the provided `LICENSE.txt` file for further information.
 
 ## Thanks to...
+* **shinyquagsire**
 * **profi200**
 * **joshbackstein**
 * **spitzeqc**
