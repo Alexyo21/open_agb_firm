@@ -1,4 +1,4 @@
-# open_agb_firm
+# open_agb_firm(READ!!!)
 open_agb_firm is a bare metal interface for *natively* running GBA games and homebrew using the 3DS's built-in GBA hardware.
 IMPORTANT:(read)
 suggesting to put the volume to zero when closing the 3ds lid.
