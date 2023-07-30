@@ -25,12 +25,12 @@
 /   3: f_lseek() function is removed in addition to 2. */
 
 
-#define FF_USE_FIND		1
+#define FF_USE_FIND		2
 /* This option switches filtered directory read functions, f_findfirst() and
 /  f_findnext(). (0:Disable, 1:Enable 2:Enable with matching altname[] too) */
 
 
-#define FF_USE_MKFS		0
+#define FF_USE_MKFS		1
 /* This option switches f_mkfs() function. (0:Disable or 1:Enable) */
 
 
@@ -153,7 +153,7 @@
 /  on character encoding. When LFN is not enabled, these options have no effect. */
 
 
-#define FF_FS_RPATH		1
+#define FF_FS_RPATH		2
 /* This option configures support for relative path.
 /
 /   0: Disable relative path and remove related functions.
@@ -213,7 +213,7 @@
 /  f_fdisk function. 0x100000000 max. This option has no effect when FF_LBA64 == 0. */
 
 
-#define FF_USE_TRIM		0
+#define FF_USE_TRIM		1
 /* This option switches support for ATA-TRIM. (0:Disable or 1:Enable)
 /  To enable Trim function, also CTRL_TRIM command should be implemented to the
 /  disk_ioctl() function. */
@@ -224,7 +224,7 @@
 / System Configurations
 /---------------------------------------------------------------------------*/
 
-#define FF_FS_TINY		0
+#define FF_FS_TINY		1
 /* This option switches tiny buffer configuration. (0:Normal or 1:Tiny)
 /  At the tiny configuration, size of file object (FIL) is shrinked FF_MAX_SS bytes.
 /  Instead of private sector buffer eliminated from the file object, common sector
@@ -263,7 +263,7 @@
 */
 
 
-#define FF_FS_LOCK		0
+#define FF_FS_LOCK		32
 /* The option FF_FS_LOCK switches file lock function to control duplicated file open
 /  and illegal operation to open objects. This option must be 0 when FF_FS_READONLY
 /  is 1.
