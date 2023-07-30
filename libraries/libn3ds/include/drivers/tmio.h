@@ -95,10 +95,10 @@ ALWAYS_INLINE vu32* getTmioFifo(Tmio *const regs)
 #define CMD_RESP_R3              (7u<<8)        // Response type R3 48 bit OCR without CRC.
 #define CMD_RESP_R4              (CMD_RESP_R3)  // Response type R4 48 bit OCR without CRC.
 #define CMD_RESP_MASK            (CMD_RESP_R3)
-#define CMD_DT_EN                (1u<<11)       // Data transfer enable.
-#define CMD_DIR_R                (1u<<12)       // Data transfer direction read.
-#define CMD_DIR_W                (0u)           // Data transfer direction write.
-#define CMD_MBT                  (1u<<13)       // Multi block transfer (auto STOP_TRANSMISSION).
+#define CMD_DATA_EN              (1u<<11)       // Data transfer enable.
+#define CMD_DATA_R               (1u<<12)       // Data transfer direction read.
+#define CMD_DATA_W               (0u)           // Data transfer direction write.
+#define CMD_MULTI_DATA           (1u<<13)       // Multi block transfer (auto STOP_TRANSMISSION).
 #define CMD_SEC_SDIO             (1u<<14)       // Security/SDIO command.
 
 // REG_SD_PORTSEL
@@ -295,7 +295,7 @@ typedef struct
 	u16 sd_clk_ctrl;
 	u16 sd_blocklen; // Also sd_blocklen32.
 	u16 sd_option;
-	u32 *buf;
+	void *buf;
 	u16 blocks;
 	u32 resp[4];     // Little endian, MSB first.
 } TmioPort;
@@ -335,12 +335,11 @@ bool TMIO_cardDetected(void);
 bool TMIO_cardWritable(void);
 
 /**
- * @brief      Outputs a continuous clock for initialization.
+ * @brief      Handles the device specific powerup sequence including the 74 clocks.
  *
  * @param      port  A pointer to the port struct.
- * @param[in]  clk   The target clock in Hz. Usually 400 kHz.
  */
-void TMIO_startInitClock(TmioPort *const port, const u32 clk);
+void TMIO_powerupSequence(TmioPort *const port);
 
 /**
  * @brief      Sends a command.
@@ -368,7 +367,7 @@ ALWAYS_INLINE void TMIO_setClock(TmioPort *const port, const u32 clk)
  * @brief      Sets the transfer block length for a tmio port.
  *
  * @param      port      A pointer to the port struct.
- * @param[in]  blockLen  The block length.
+ * @param[in]  blockLen  The block length. Caution: Provide a buffer with multiple of 4 size regardless of block length.
  */
 ALWAYS_INLINE void TMIO_setBlockLen(TmioPort *const port, u16 blockLen)
 {
@@ -396,7 +395,7 @@ ALWAYS_INLINE void TMIO_setBusWidth(TmioPort *const port, const u8 width)
  * @param      buf     The buffer pointer.
  * @param[in]  blocks  The number of blocks to transfer.
  */
-ALWAYS_INLINE void TMIO_setBuffer(TmioPort *const port, u32 *buf, const u16 blocks)
+ALWAYS_INLINE void TMIO_setBuffer(TmioPort *const port, void *buf, const u16 blocks)
 {
 	port->buf    = buf;
 	port->blocks = blocks;
