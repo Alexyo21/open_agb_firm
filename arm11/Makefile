@@ -35,16 +35,16 @@ endif
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k+vfpv2 -mtune=mpcore -mfloat-abi=hard -mtp=soft -marm -mthumb-interwork -masm-syntax-unified
 
-CFLAGS	:=	$(ARCH) -std=c17 -O2 -gdwarf-4 -flto -mword-relocations \
-			-ffunction-sections -fno-math-errno -Wall -Wextra
+CFLAGS	:=	$(ARCH) -g -std=c17 -Og -gdwarf-4 -flto -mword-relocations \
+			-ffunction-sections -Wall -Wextra
 CFLAGS	+=	$(INCLUDE) $(DEFINES)
 
-CXXFLAGS	:=	$(ARCH) -std=c++17 -O2 -gdwarf-4 -flto -fno-rtti -fno-exceptions \
-				-mword-relocations -ffunction-sections -fno-math-errno -Wall -Wextra
+CXXFLAGS	:=	$(ARCH) -g -std=c++17 -Og -gdwarf-4 -flto \
+				-mword-relocations -ffunction-sections -Wall -Wextra
 CXXFLAGS	+=	$(INCLUDE) $(DEFINES)
 
-ASFLAGS	:=	$(ARCH) -gdwarf-4 -flto $(INCLUDE) $(DEFINES)
-LDFLAGS	=	$(ARCH) -gdwarf-4 -flto -specs=../arm11.specs -Wl,-Map,$(notdir $*.map) -nostartfiles
+ASFLAGS	:=	$(ARCH) -g -gdwarf-4 -flto $(INCLUDE) $(DEFINES)
+LDFLAGS	=	$(ARCH) -g -gdwarf-4 -flto -specs=../arm11.specs -Wl,-Map,$(notdir $*.map) -nostartfiles
 
 ifeq ($(strip $(NO_DEBUG)),)
 	CFLAGS	:=	$(subst -flto,,$(CFLAGS)) -fstack-protector-strong -fno-inline
@@ -53,7 +53,7 @@ ifeq ($(strip $(NO_DEBUG)),)
 	LDFLAGS	:=	$(subst -flto,,$(LDFLAGS)) -fstack-protector-strong -fno-inline -Wl,-wrap=malloc,-wrap=calloc,-wrap=free
 endif
 
-LIBS	:=	-lm
+LIBS	:= -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
