@@ -22,7 +22,7 @@ BUILD		:=	build
 SOURCES		+=	../source ../source/arm11 ../libraries/inih
 DATA		:=
 INCLUDES	+=	../include ../libraries
-DEFINES		:=	-DARM11 -D_3DS -DVERS_STRING=\"$(VERS_STRING)\" \
+DEFINES		:=	-DARM11 -D__3DS__ -DVERS_STRING=\"$(VERS_STRING)\" \
 				-DVERS_MAJOR=$(VERS_MAJOR) -DVERS_MINOR=$(VERS_MINOR)
 ASSETS		:=
 
