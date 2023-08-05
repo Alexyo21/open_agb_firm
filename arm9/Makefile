@@ -35,11 +35,11 @@ endif
 ARCH	:=	-march=armv5te -mtune=arm946e-s -mfloat-abi=soft -mtp=soft -marm -mthumb-interwork -masm-syntax-unified
 
 CFLAGS	:=	$(ARCH) -std=c17 -O2 -gdwarf-4 -flto -mword-relocations \
-			-ffunction-sections -Wall -Wextra
+			-ffast-math -ffunction-sections -Wall -Wextra
 CFLAGS	+=	$(INCLUDE) $(DEFINES)
 
 CXXFLAGS	:=	$(ARCH) -std=c++17 -O2 -gdwarf-4 -flto -fno-rtti -fno-exceptions \
-				-mword-relocations -ffunction-sections -Wall -Wextra
+				-mword-relocations -ffast-math -ffunction-sections -Wall -Wextra
 CXXFLAGS	+=	$(INCLUDE) $(DEFINES)
 
 ASFLAGS	:=	$(ARCH) -gdwarf-4 -flto $(INCLUDE) $(DEFINES)
@@ -52,7 +52,7 @@ ifeq ($(strip $(NO_DEBUG)),)
 	LDFLAGS	:=	$(subst -flto,,$(LDFLAGS)) -fstack-protector-strong -fno-inline -Wl,-wrap=malloc,-wrap=calloc,-wrap=free
 endif
 
-LIBS	:=
+LIBS	:= -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
