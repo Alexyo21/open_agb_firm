@@ -36,11 +36,11 @@ endif
 ARCH	:=	-march=armv6k+vfpv2 -mtune=mpcore -mfloat-abi=hard -mtp=soft -marm -mthumb-interwork -masm-syntax-unified
 
 CFLAGS	:=	$(ARCH) -g -std=c17 -Og -gdwarf-4 -flto -mword-relocations \
-			-ffunction-sections -Wall -Wextra
+			-fno-fast-math -ffunction-sections -Wall -Wextra
 CFLAGS	+=	$(INCLUDE) $(DEFINES)
 
 CXXFLAGS	:=	$(ARCH) -g -std=c++17 -Og -gdwarf-4 -flto \
-				-mword-relocations -ffunction-sections -Wall -Wextra
+				-mword-relocations -fno-fast-math -ffunction-sections -Wall -Wextra
 CXXFLAGS	+=	$(INCLUDE) $(DEFINES)
 
 ASFLAGS	:=	$(ARCH) -g -gdwarf-4 -flto $(INCLUDE) $(DEFINES)
